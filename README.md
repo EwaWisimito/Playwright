@@ -40,6 +40,8 @@ hit twice <kbd>Ctrl</kbd> + <kbd>C</kbd>
 - Timeline: file context menu -> Open Timeline
 - Formatting: editor -> context menu -> Format Document
 - Shift+alt+ Down Arrow  -> Copy whole line
+- Refactor- (ctrl+shift+r  -. enter)higlight string and right click -. context menu ->refactor -.
+- alt+ arrow -> move whole line
 
 ## Playwright snippets
 - test:
