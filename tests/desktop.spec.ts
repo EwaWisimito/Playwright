@@ -1,9 +1,13 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Quick Payment tests', () => {
-  const urlDemoBank = 'https://demo-bank.vercel.app/';
   const userID = 'tester01';
   const uerPassword = 'Frytka12';
+
+  test.beforeEach(async ({ page }) => {
+    const urlDemoBank = 'https://demo-bank.vercel.app/';
+    await page.goto(urlDemoBank);
+    });
 
   test('Quick payment with correct data', async ({ page }) => {
     // arrange
@@ -12,7 +16,6 @@ test.describe('Quick Payment tests', () => {
     const transferTitle = 'zwrot';
 
     // act
-    await page.goto(urlDemoBank);
     await page.getByTestId('login-input').fill(userID);
     await page.getByTestId('password-input').fill(uerPassword);
     await page.getByTestId('login-button').click();
@@ -36,7 +39,7 @@ test.describe('Quick Payment tests', () => {
     const topupReciver = '503 xxx xxx';
     const topupAmount = '50';
 
-    await page.goto(urlDemoBank);
+  
     await page.getByTestId('login-input').fill(userID);
     await page.getByTestId('password-input').fill(uerPassword);
     await page.getByTestId('login-button').click();
@@ -51,7 +54,7 @@ test.describe('Quick Payment tests', () => {
     await page.getByTestId('close-button').click();
 
     await expect(page.locator('#show_messages')).toHaveText(
-      `Dładowanie wykonane! ${topupAmount},00PLN na numer ${topupReciver}`,
+      `Doładowanie wykonane! ${topupAmount},00PLN na numer ${topupReciver}`,
     );
   });
 });
