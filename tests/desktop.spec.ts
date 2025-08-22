@@ -51,4 +51,22 @@ test.describe('Quick Payment tests', () => {
       `Doładowanie wykonane! ${topupAmount},00PLN na numer ${topupReciver}`,
     );
   });
+
+  test('Correct balance after Successful phone recharge', async ({ page }) => {
+    const topUpReceiver = '503 xxx xxx';
+    const topUpAmount = '50';
+    const initialBalance = await page.locator('#money_value').innerText();
+    const expectedBalance = Number(initialBalance) - Number(topUpAmount);
+
+    await page.locator('#widget_1_topup_receiver').selectOption(topUpReceiver);
+    await page.locator('#widget_1_topup_amount').fill(topUpAmount);
+    //await page.locator('#uniform-widget_1_topup_agreement span').click();
+    await page.locator('#widget_1_topup_agreement').click();
+
+    //await page.getByRole('button', { name: 'doładuj telefon' }).click();
+    await page.locator('#execute_phone_btn').click();
+    await page.getByTestId('close-button').click();
+
+    await expect(page.locator('#money_value')).toHaveText(`${expectedBalance}`);
+  });
 });

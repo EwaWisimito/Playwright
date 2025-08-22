@@ -1,18 +1,15 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('User login to Demobank', () => {
-  
-  const userID = 'tester01';
-  const uerPassword = 'Frytka12';
-  const expectedUserName = 'Jan Demobankowy';
-  
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
-    
-    });
+  });
 
   test('Successful login', async ({ page }) => {
     //Arrange
+    const userID = 'tester01';
+    const uerPassword = 'Frytka12';
+    const expectedUserName = 'Jan Demobankowy';
 
     // Act
     await page.getByTestId('login-input').fill(userID);
@@ -35,6 +32,7 @@ test.describe('User login to Demobank', () => {
   });
 
   test('unsuccessful login with too short password', async ({ page }) => {
+    const userID = 'tester01';
     const incorrectPassword = 'Fryt';
     const expectedErrorMessage = 'hasło ma min. 8 znaków';
 
