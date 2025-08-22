@@ -7,8 +7,7 @@ test.describe('User login to Demobank', () => {
   const expectedUserName = 'Jan Demobankowy';
   
   test.beforeEach(async ({ page }) => {
-    const urlDemoBank = 'https://demo-bank.vercel.app/';
-    await page.goto(urlDemoBank);
+    await page.goto('/');
     
     });
 
