@@ -1,15 +1,21 @@
 import { test, expect } from '@playwright/test';
 import { loginData } from '../test-data/login.data';
+import { LoginPage } from '../pages/login.page';
 
 test.describe('Payment Tab tests', () => {
   test.beforeEach(async ({ page }) => {
+    //Arrange
     const userID = loginData.userID;
     const userPassword = loginData.userPassword;
 
+    //Act
+    const loginPage = new LoginPage(page);
     await page.goto('/');
-    await page.getByTestId('login-input').fill(userID);
-    await page.getByTestId('password-input').fill(userPassword);
-    await page.getByTestId('login-button').click();
+    await loginPage.loginInput.fill(userID);
+    await loginPage.passwordInput.fill(userPassword);
+    await loginPage.loginButton.click();
+
+    
     await page.getByRole('link', { name: 'płatności' }).click();
   });
 
