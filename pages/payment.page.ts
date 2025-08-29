@@ -1,7 +1,11 @@
 import { Page } from '@playwright/test';
+import { SideMenuComponents } from '../components/side-menu.component';
 
 export class Payment {
     constructor(private page: Page) {}
+
+    sideMenu = new SideMenuComponents(this.page);
+    //paymentMenuButton = this.page.getByRole('link', { name: 'płatności' });
 
     transferReceiverInput = this.page.getByTestId('transfer_receiver');
     accountNumberInput = this.page.getByTestId('form_account_to');

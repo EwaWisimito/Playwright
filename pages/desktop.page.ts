@@ -1,7 +1,11 @@
 import { Page } from '@playwright/test';
+import { SideMenuComponents } from '../components/side-menu.component';
 
 export class Desktop {
   constructor(private page: Page) {}
+
+  sideMenu = new SideMenuComponents(this.page);
+  //paymentMenuButton = this.page.getByRole('link', { name: 'płatności' });
 
   userNameID = this.page.getByTestId('user-name');
   receiverInput = this.page.locator('#widget_1_transfer_receiver');

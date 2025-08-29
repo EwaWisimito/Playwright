@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 import { loginData } from '../test-data/login.data';
 import { LoginPage } from '../pages/login.page';
 import { Payment } from '../pages/payment.page';
+import { Desktop } from '../pages/desktop.page';
 
 test.describe('Payment Tab tests', () => {
   test.beforeEach(async ({ page }) => {
@@ -17,7 +18,9 @@ test.describe('Payment Tab tests', () => {
     await loginPage.loginButton.click();
 
     //Assert
-    await page.getByRole('link', { name: 'płatności' }).click();
+    const desktop = new Desktop(page);
+    await desktop.sideMenu.paymentMenuButton.click();
+    //await page.getByRole('link', { name: 'płatności' }).click();
   });
 
   test('Simple Payment', async ({ page }) => {
@@ -36,8 +39,6 @@ test.describe('Payment Tab tests', () => {
     await payment.closeButton.click();
 
     //Assert
-    await expect(payment.transferMessageText).toHaveText(
-      expectedTransferMessage,
-    );
+    await expect(payment.transferMessageText).toHaveText(expectedTransferMessage);
   });
 });
