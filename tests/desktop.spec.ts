@@ -4,6 +4,7 @@ import { LoginPage } from '../pages/login.page';
 import { Desktop } from '../pages/desktop.page';
 
 test.describe('Desktop tests', () => {
+  let desktop: Desktop;
   test.beforeEach(async ({ page }) => {
     const userID = loginData.userID;
     const userPassword = loginData.userPassword;
@@ -12,9 +13,9 @@ test.describe('Desktop tests', () => {
 
     const loginPage = new LoginPage(page);
 
-    await loginPage.loginInput.fill(userID);
-    await loginPage.passwordInput.fill(userPassword);
-    await loginPage.loginButton.click();
+    await loginPage.login(userID, userPassword);
+
+    desktop = new Desktop(page);
   });
 
   test('Quick payment with correct data', async ({ page }) => {
@@ -25,7 +26,6 @@ test.describe('Desktop tests', () => {
     const expectedTransferMessage = `Przelew wykonany! Chuck Demobankowy - ${transferAmount},00PLN - ${transferTitle}`;
 
     // act
-    const desktop = new Desktop(page);
     await desktop.receiverInput.selectOption(reciverID);
     await desktop.transferAmountInput.fill(transferAmount);
     await desktop.transferTitleInput.fill(transferTitle);
@@ -44,7 +44,6 @@ test.describe('Desktop tests', () => {
     const expectedTopupMessage = `Doładowanie wykonane! ${topupAmount},00PLN na numer ${topupReciver}`;
 
     //Act
-    const desktop = new Desktop(page);
     await desktop.topUpReceiver.selectOption(topupReciver);
     await desktop.topUpAmount.fill(topupAmount);
     await desktop.topUpAgreement.click();
@@ -58,8 +57,6 @@ test.describe('Desktop tests', () => {
 
   test('Correct balance after Successful phone recharge', async ({ page }) => {
     //Arrange
-    const desktop = new Desktop(page);
-
     const topUpReceiver = '503 xxx xxx';
     const topUpAmount = '50';
     const initialBalance = await desktop.topUpMoneyValue.innerText();

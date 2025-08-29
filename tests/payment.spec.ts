@@ -5,6 +5,8 @@ import { Payment } from '../pages/payment.page';
 import { Desktop } from '../pages/desktop.page';
 
 test.describe('Payment Tab tests', () => {
+  let payment: Payment;
+
   test.beforeEach(async ({ page }) => {
     //Arrange
     const userID = loginData.userID;
@@ -13,14 +15,13 @@ test.describe('Payment Tab tests', () => {
     //Act
     const loginPage = new LoginPage(page);
     await page.goto('/');
-    await loginPage.loginInput.fill(userID);
-    await loginPage.passwordInput.fill(userPassword);
-    await loginPage.loginButton.click();
+    await loginPage.login(userID, userPassword);
 
     //Assert
     const desktop = new Desktop(page);
     await desktop.sideMenu.paymentMenuButton.click();
-    //await page.getByRole('link', { name: 'płatności' }).click();
+
+    payment = new Payment(page);
   });
 
   test('Simple Payment', async ({ page }) => {
@@ -31,7 +32,6 @@ test.describe('Payment Tab tests', () => {
     const expectedTransferMessage = `Przelew wykonany! ${transferAmount},00PLN dla ${transferReceiver}`;
 
     //Act
-    const payment = new Payment(page);
     await payment.transferReceiverInput.fill(transferReceiver);
     await payment.accountNumberInput.fill(accountNumber);
     await payment.amountInput.fill(transferAmount);
@@ -39,6 +39,8 @@ test.describe('Payment Tab tests', () => {
     await payment.closeButton.click();
 
     //Assert
-    await expect(payment.transferMessageText).toHaveText(expectedTransferMessage);
+    await expect(payment.transferMessageText).toHaveText(
+      expectedTransferMessage,
+    );
   });
 });
