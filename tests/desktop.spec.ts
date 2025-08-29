@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { loginData } from '../test-data/login.data';
 import { LoginPage } from '../pages/login.page';
+import { Desktop } from '../pages/desktop.page';
 
 test.describe('Desktop tests', () => {
   test.beforeEach(async ({ page }) => {
@@ -10,7 +11,7 @@ test.describe('Desktop tests', () => {
     await page.goto('/');
 
     const loginPage = new LoginPage(page);
-    
+
     await loginPage.loginInput.fill(userID);
     await loginPage.passwordInput.fill(userPassword);
     await loginPage.loginButton.click();
@@ -21,59 +22,59 @@ test.describe('Desktop tests', () => {
     const reciverID = '2';
     const transferAmount = '150';
     const transferTitle = 'zwrot';
-    const transferMessage = page.locator('#show_messages');
+    const expectedTransferMessage = `Przelew wykonany! Chuck Demobankowy - ${transferAmount},00PLN - ${transferTitle}`;
 
     // act
+    const desktop = new Desktop(page);
+    await desktop.receiverInput.selectOption(reciverID);
+    await desktop.transferAmountInput.fill(transferAmount);
+    await desktop.transferTitleInput.fill(transferTitle);
 
-    await page.locator('#widget_1_transfer_receiver').selectOption(reciverID);
-    await page.locator('#widget_1_transfer_amount').fill(transferAmount);
-    await page.locator('#widget_1_transfer_title').fill(transferTitle);
+    await desktop.desktopExecuteButton.click();
+    await desktop.desktopCloseButton.click();
 
-    await page.locator('#execute_btn').click();
-    await page.getByTestId('close-button').click();
-
-    //asert
-    await transferMessage.waitFor();
-    await expect(transferMessage).toHaveText(
-      `Przelew wykonany! Chuck Demobankowy - ${transferAmount},00PLN - ${transferTitle}`,
-    );
+    //assert
+    await expect(desktop.showMessages).toHaveText(expectedTransferMessage);
   });
 
   test('Successful phone recharge', async ({ page }) => {
+    //Arrange
     const topupReciver = '503 xxx xxx';
     const topupAmount = '50';
-    const reciverMessage = page.locator('#show_messages');
+    const expectedTopupMessage = `Doładowanie wykonane! ${topupAmount},00PLN na numer ${topupReciver}`;
 
-    await page.locator('#widget_1_topup_receiver').selectOption(topupReciver);
-    await page.locator('#widget_1_topup_amount').fill(topupAmount);
-    //await page.locator('#uniform-widget_1_topup_agreement span').click();
-    await page.locator('#widget_1_topup_agreement').click();
+    //Act
+    const desktop = new Desktop(page);
+    await desktop.topUpReceiver.selectOption(topupReciver);
+    await desktop.topUpAmount.fill(topupAmount);
+    await desktop.topUpAgreement.click();
 
-    //await page.getByRole('button', { name: 'doładuj telefon' }).click();
-    await page.locator('#execute_phone_btn').click();
-    await page.getByTestId('close-button').click();
+    await desktop.executePhoneButton.click();
+    await desktop.desktopCloseButton.click();
 
-    await reciverMessage.waitFor();
-    await expect(reciverMessage).toHaveText(
-      `Doładowanie wykonane! ${topupAmount},00PLN na numer ${topupReciver}`,
-    );
+    //Assert
+    await expect(desktop.showMessages).toHaveText(expectedTopupMessage);
   });
 
   test('Correct balance after Successful phone recharge', async ({ page }) => {
+    //Arrange
+    const desktop = new Desktop(page);
+
     const topUpReceiver = '503 xxx xxx';
     const topUpAmount = '50';
-    const initialBalance = await page.locator('#money_value').innerText();
+    const initialBalance = await desktop.topUpMoneyValue.innerText();
     const expectedBalance = Number(initialBalance) - Number(topUpAmount);
 
-    await page.locator('#widget_1_topup_receiver').selectOption(topUpReceiver);
-    await page.locator('#widget_1_topup_amount').fill(topUpAmount);
-    //await page.locator('#uniform-widget_1_topup_agreement span').click();
-    await page.locator('#widget_1_topup_agreement').click();
+    //Act
 
-    //await page.getByRole('button', { name: 'doładuj telefon' }).click();
-    await page.locator('#execute_phone_btn').click();
-    await page.getByTestId('close-button').click();
+    await desktop.topUpReceiver.selectOption(topUpReceiver);
+    await desktop.topUpAmount.fill(topUpAmount);
+    await desktop.topUpAgreement.click();
 
-    await expect(page.locator('#money_value')).toHaveText(`${expectedBalance}`);
+    await desktop.executePhoneButton.click();
+    await desktop.desktopCloseButton.click();
+
+    //Assert
+    await expect(desktop.topUpMoneyValue).toHaveText(`${expectedBalance}`);
   });
 });
