@@ -21,4 +21,29 @@ export class Desktop {
 
   desktopCloseButton = this.page.getByTestId('close-button');
   showMessages = this.page.locator('#show_messages');
+
+  async makeQuickPayment(
+    reciverID: string,
+    transferAmount: string,
+    transferTitle: string,
+  ): Promise<void> {
+    await this.receiverInput.selectOption(reciverID);
+    await this.transferAmountInput.fill(transferAmount);
+    await this.transferTitleInput.fill(transferTitle);
+
+    await this.desktopExecuteButton.click();
+    await this.desktopCloseButton.click();
+  }
+
+  async rechargePhone(
+    topupReciver: string,
+    topupAmount: string,
+  ): Promise<void> {
+    await this.topUpReceiver.selectOption(topupReciver);
+    await this.topUpAmount.fill(topupAmount);
+    await this.topUpAgreement.click();
+
+    await this.executePhoneButton.click();
+    await this.desktopCloseButton.click();
+  }
 }

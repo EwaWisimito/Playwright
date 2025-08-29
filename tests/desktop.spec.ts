@@ -26,12 +26,7 @@ test.describe('Desktop tests', () => {
     const expectedTransferMessage = `Przelew wykonany! Chuck Demobankowy - ${transferAmount},00PLN - ${transferTitle}`;
 
     // act
-    await desktop.receiverInput.selectOption(reciverID);
-    await desktop.transferAmountInput.fill(transferAmount);
-    await desktop.transferTitleInput.fill(transferTitle);
-
-    await desktop.desktopExecuteButton.click();
-    await desktop.desktopCloseButton.click();
+    await desktop.makeQuickPayment(reciverID, transferAmount, transferTitle);
 
     //assert
     await expect(desktop.showMessages).toHaveText(expectedTransferMessage);
@@ -44,12 +39,7 @@ test.describe('Desktop tests', () => {
     const expectedTopupMessage = `Doładowanie wykonane! ${topupAmount},00PLN na numer ${topupReciver}`;
 
     //Act
-    await desktop.topUpReceiver.selectOption(topupReciver);
-    await desktop.topUpAmount.fill(topupAmount);
-    await desktop.topUpAgreement.click();
-
-    await desktop.executePhoneButton.click();
-    await desktop.desktopCloseButton.click();
+    await desktop.rechargePhone(topupReciver, topupAmount);
 
     //Assert
     await expect(desktop.showMessages).toHaveText(expectedTopupMessage);
@@ -57,19 +47,14 @@ test.describe('Desktop tests', () => {
 
   test('Correct balance after Successful phone recharge', async ({ page }) => {
     //Arrange
-    const topUpReceiver = '503 xxx xxx';
-    const topUpAmount = '50';
+    const topupReciver = '503 xxx xxx';
+    const topupAmount = '50';
     const initialBalance = await desktop.topUpMoneyValue.innerText();
-    const expectedBalance = Number(initialBalance) - Number(topUpAmount);
+    const expectedBalance = Number(initialBalance) - Number(topupAmount);
 
     //Act
 
-    await desktop.topUpReceiver.selectOption(topUpReceiver);
-    await desktop.topUpAmount.fill(topUpAmount);
-    await desktop.topUpAgreement.click();
-
-    await desktop.executePhoneButton.click();
-    await desktop.desktopCloseButton.click();
+    await desktop.rechargePhone(topupReciver, topupAmount);
 
     //Assert
     await expect(desktop.topUpMoneyValue).toHaveText(`${expectedBalance}`);
