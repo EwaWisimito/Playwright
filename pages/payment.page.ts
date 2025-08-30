@@ -16,12 +16,14 @@ export class Payment {
   closeButton = this.page.getByTestId('close-button');
 
   transferMessageText = this.page.getByTestId('message-text');
+  waitForLoadState = this.page.waitForLoadState('domcontentloaded');
 
   async makeTransfer(
     transferReceiver: string,
     accountNumber: string,
     transferAmount: string,
   ): Promise<void> {
+    await this.waitForLoadState;
     await this.transferReceiverInput.fill(transferReceiver);
     await this.accountNumberInput.fill(accountNumber);
     await this.amountInput.fill(transferAmount);
@@ -30,8 +32,6 @@ export class Payment {
     await this.closeButton.click();
   }
 }
-
-
 
 // import { Page } from '@playwright/test';
 // import { SideMenuComponents } from '../components/side-menu.component';
@@ -68,4 +68,3 @@ export class Payment {
 //     await this.closeButton.click();
 //   }
 // }
-
