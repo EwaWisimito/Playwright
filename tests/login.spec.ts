@@ -12,7 +12,7 @@ test.describe('User login to Demobank', () => {
   });
 
   test(
-    'Successful loginwith correct credential',
+    'Successful login with correct credential',
     {
       tag: ['@login', '@smoke'],
       annotation: {

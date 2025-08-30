@@ -5,6 +5,7 @@ import { Desktop } from '../pages/desktop.page';
 
 test.describe('Desktop tests', () => {
   let desktop: Desktop;
+
   test.beforeEach(async ({ page }) => {
     const userID = loginData.userID;
     const userPassword = loginData.userPassword;
@@ -18,7 +19,7 @@ test.describe('Desktop tests', () => {
     desktop = new Desktop(page);
   });
 
-  test(
+  test.only(
     'Quick payment with correct data',
     {
       tag: ['@desktop', '@integration'],
