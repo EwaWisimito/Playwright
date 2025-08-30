@@ -26,7 +26,13 @@ test.describe('Payment Tab tests', () => {
 
   test(
     'Simple Payment',
-    { tag: ['@payment', '@integration'] },
+    {
+      tag: ['@payment', '@integration'],
+      annotation: {
+        type: 'Documentation',
+        description: 'https://jaktestowac.pl/lesson/pw1s04l04/',
+      },
+    },
     async ({ page }) => {
       //Arrange
       const transferReceiver = 'Jan Testowy';

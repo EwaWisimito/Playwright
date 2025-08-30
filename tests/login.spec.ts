@@ -11,19 +11,29 @@ test.describe('User login to Demobank', () => {
     loginPage = new LoginPage(page);
   });
 
-  test('Successful login', { tag: ['@login', '@smoke'] }, async ({ page }) => {
-    //Arrange
-    const userID = loginData.userID;
-    const userPassword = loginData.userPassword;
-    const expectedUserName = 'Jan Demobankowy';
+  test(
+    'Successful loginwith correct credential',
+    {
+      tag: ['@login', '@smoke'],
+      annotation: {
+        type: 'Happy path',
+        description: 'Basic happy path for login',
+      },
+    },
+    async ({ page }) => {
+      //Arrange
+      const userID = loginData.userID;
+      const userPassword = loginData.userPassword;
+      const expectedUserName = 'Jan Demobankowy';
 
-    // Act
-    await loginPage.login(userID, userPassword);
+      // Act
+      await loginPage.login(userID, userPassword);
 
-    // Assert
-    const desktop = new Desktop(page);
-    await expect(desktop.userNameID).toHaveText(expectedUserName);
-  });
+      // Assert
+      const desktop = new Desktop(page);
+      await expect(desktop.userNameID).toHaveText(expectedUserName);
+    },
+  );
 
   test(
     'unsuccessful login with too short user name',
