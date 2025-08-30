@@ -18,7 +18,7 @@ test.describe('Desktop tests', () => {
     desktop = new Desktop(page);
   });
 
-  test('Quick payment with correct data', async ({ page }) => {
+  test('Quick payment with correct data @desktop @integration', async ({ page }) => {
     // arrange
     const reciverID = '2';
     const transferAmount = '150';
@@ -32,7 +32,7 @@ test.describe('Desktop tests', () => {
     await expect(desktop.showMessages).toHaveText(expectedTransferMessage);
   });
 
-  test('Successful phone recharge', async ({ page }) => {
+  test('Successful phone recharge @desktop @integration', async ({ page }) => {
     //Arrange
     const topupReciver = '503 xxx xxx';
     const topupAmount = '50';
@@ -45,7 +45,7 @@ test.describe('Desktop tests', () => {
     await expect(desktop.showMessages).toHaveText(expectedTopupMessage);
   });
 
-  test('Correct balance after Successful phone recharge', async ({ page }) => {
+  test('Correct balance after Successful phone recharge @desktop @integration', async ({ page }) => {
     //Arrange
     const topupReciver = '503 xxx xxx';
     const topupAmount = '50';

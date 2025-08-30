@@ -24,7 +24,7 @@ test.describe('Payment Tab tests', () => {
     payment = new Payment(page);
   });
 
-  test('Simple Payment', async ({ page }) => {
+  test('Simple Payment @payment @integration', async ({ page }) => {
     //Arrange
     const transferReceiver = 'Jan Testowy';
     const accountNumber = '12 3456 7890 1234 5678 9012 34568';

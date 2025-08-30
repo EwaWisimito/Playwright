@@ -11,7 +11,8 @@
     "test:login": "npm run test tests/login.spec.ts",
     "test:login:headed": "npm run test tests/login.spec.ts -- --headed",
     "test:payment": "npm run test tests/payment.spec.ts",
-    "test:payment:headed": "npm run test tests/payment.spec.ts -- --headed"
+    "test:payment:headed": "npm run test tests/payment.spec.ts -- --headed",
+    "test:loginTag": "npx playwright test --grep \"@login\""
   },
   "keywords": [],
   "author": "",
