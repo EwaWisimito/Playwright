@@ -20,7 +20,13 @@ test.describe('Desktop tests', () => {
 
   test(
     'Quick payment with correct data',
-    { tag: ['@desktop', '@integration'] },
+    {
+      tag: ['@desktop', '@integration'],
+      annotation: {
+        type: 'Documentation',
+        description: 'https://jaktestowac.pl/course/playwright-wprowadzenie/',
+      },
+    },
     async ({ page }) => {
       // arrange
       const reciverID = '2';
