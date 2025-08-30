@@ -11,7 +11,7 @@ test.describe('User login to Demobank', () => {
     loginPage = new LoginPage(page);
   });
 
-  test('Successful login @login', async ({ page }) => {
+  test('Successful login', { tag: ['@login', '@smoke'] }, async ({ page }) => {
     //Arrange
     const userID = loginData.userID;
     const userPassword = loginData.userPassword;
@@ -25,31 +25,39 @@ test.describe('User login to Demobank', () => {
     await expect(desktop.userNameID).toHaveText(expectedUserName);
   });
 
-  test('unsuccessful login with too short user name @login @smoke', async ({ page }) => {
-    //Arrange
-    const incorrectLogin = 'test';
-    const expectedErrorLoginMessage = 'identyfikator ma min. 8 znaków';
+  test(
+    'unsuccessful login with too short user name',
+    { tag: ['@login'] },
+    async ({ page }) => {
+      //Arrange
+      const incorrectLogin = 'test';
+      const expectedErrorLoginMessage = 'identyfikator ma min. 8 znaków';
 
-    //Act
-    await loginPage.loginInput.fill(incorrectLogin);
-    await loginPage.passwordInput.click();
+      //Act
+      await loginPage.loginInput.fill(incorrectLogin);
+      await loginPage.passwordInput.click();
 
-    //Assert
-    await expect(loginPage.loginError).toHaveText(expectedErrorLoginMessage);
-  });
+      //Assert
+      await expect(loginPage.loginError).toHaveText(expectedErrorLoginMessage);
+    },
+  );
 
-  test('unsuccessful login with too short password @login', async ({ page }) => {
-    //Arrange
-    const userID = loginData.userID;
-    const incorrectPassword = 'Fryt';
-    const expectedErrorMessage = 'hasło ma min. 8 znaków';
+  test(
+    'unsuccessful login with too short password',
+    { tag: '@login' },
+    async ({ page }) => {
+      //Arrange
+      const userID = loginData.userID;
+      const incorrectPassword = 'Fryt';
+      const expectedErrorMessage = 'hasło ma min. 8 znaków';
 
-    //Act
-    await loginPage.loginInput.fill(userID);
-    await loginPage.passwordInput.fill(incorrectPassword);
-    await loginPage.passwordInput.blur();
+      //Act
+      await loginPage.loginInput.fill(userID);
+      await loginPage.passwordInput.fill(incorrectPassword);
+      await loginPage.passwordInput.blur();
 
-    //Assert
-    await expect(loginPage.passwordError).toHaveText(expectedErrorMessage);
-  });
+      //Assert
+      await expect(loginPage.passwordError).toHaveText(expectedErrorMessage);
+    },
+  );
 });

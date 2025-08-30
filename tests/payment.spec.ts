@@ -24,19 +24,27 @@ test.describe('Payment Tab tests', () => {
     payment = new Payment(page);
   });
 
-  test('Simple Payment @payment @integration', async ({ page }) => {
-    //Arrange
-    const transferReceiver = 'Jan Testowy';
-    const accountNumber = '12 3456 7890 1234 5678 9012 34568';
-    const transferAmount = '222';
-    const expectedTransferMessage = `Przelew wykonany! ${transferAmount},00PLN dla ${transferReceiver}`;
+  test(
+    'Simple Payment',
+    { tag: ['@payment', '@integration'] },
+    async ({ page }) => {
+      //Arrange
+      const transferReceiver = 'Jan Testowy';
+      const accountNumber = '12 3456 7890 1234 5678 9012 34568';
+      const transferAmount = '222';
+      const expectedTransferMessage = `Przelew wykonany! ${transferAmount},00PLN dla ${transferReceiver}`;
 
-    //Act
-    await payment.makeTransfer(transferReceiver, accountNumber,transferAmount);
+      //Act
+      await payment.makeTransfer(
+        transferReceiver,
+        accountNumber,
+        transferAmount,
+      );
 
-    //Assert
-    await expect(payment.transferMessageText).toHaveText(
-      expectedTransferMessage,
-    );
-  });
+      //Assert
+      await expect(payment.transferMessageText).toHaveText(
+        expectedTransferMessage,
+      );
+    },
+  );
 });
